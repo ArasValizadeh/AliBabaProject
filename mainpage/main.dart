@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_local_variable, empty_statements
+// ignore_for_file: camel_case_types, prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_local_variable, empty_statements, unnecessary_new
 
 import 'package:flutter/material.dart';
 
@@ -55,21 +55,13 @@ Widget banner(BuildContext context){
   );
 }
 
-Widget ButtonBanner(BuildContext context){
-  return MaterialApp(
-    home: Scaffold(
-      backgroundColor: Colors.blueAccent,
-    )
-  );       
-}
-
 Widget main_items(BuildContext context) {
   return Column(
     children: [
       Center(
         child: SizedBox(
           width: 400,
-          height: 800,
+          height: 500,
           child: Center(
             child: Scaffold(
               body: FractionallySizedBox(
@@ -93,10 +85,141 @@ Widget main_items(BuildContext context) {
           ),
         ),
       ),
-      ButtonBanner(context),
+      
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0,110, 0, 0),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: 400,
+            height: 120,
+            child:
+              ButtonBanner(context)),
+        ),
+      )
     ],
   );
 }
+
+
+Widget ButtonBanner(BuildContext context){
+  return MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      backgroundColor: Colors.orangeAccent,
+      bottomNavigationBar: BottomAppBar(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.account_circle_outlined,
+                  size: 30,),
+        
+                  TextButton(
+                    onPressed:(){
+
+                    }, 
+                    child: Text("حساب کاربری",
+                      style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "Brb",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      ),
+                  ),)
+                ],
+              ),
+        
+              SizedBox(
+                width: 20,
+              ),
+        
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.backpack_outlined,
+                  size: 30,),
+
+                  TextButton(
+                    onPressed:(){
+
+                    }, 
+                    child: Text("سفرهای من",
+                      style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "Brb",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    ),
+                  )
+                ],
+              ),
+        
+              SizedBox(
+                width: 15,
+              ),
+        
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.published_with_changes_rounded,
+                  size: 30,),
+        
+                  TextButton(
+                    onPressed:(){
+
+                    }, 
+                    child: Text("پلاس",
+                      style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "Brb",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )
+                  )
+                ],
+              ),
+        
+              SizedBox(
+                width: 15,
+              ),
+        
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.house_sharp,
+                  size: 30,),
+        
+                  TextButton(
+                    onPressed:(){
+
+                    }, 
+                    child: Text("خانه",
+                      style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "Brb",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      ),
+                    )
+                  )
+                ],
+              ),
+        
+            ],
+          ),
+        )
+      ,)
+    )
+  );       
+}
+
 
 Widget buildItem(String transportaion ,{required double widthbox, required double heightbox}){
   IconData iconData;
@@ -211,8 +334,6 @@ Widget main_menu(BuildContext context){
             width: 150,
             decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            
-
           ),
           child: TextButton(
               onPressed: () {},
