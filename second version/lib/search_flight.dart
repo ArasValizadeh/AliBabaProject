@@ -30,6 +30,70 @@ class _search_flightState extends State<search_flight> {
   }
 }
 
+class search_sort extends StatefulWidget {
+  const search_sort({super.key});
+
+  @override
+  State<search_sort> createState() => _search_sortState();
+}
+
+class _search_sortState extends State<search_sort> {
+  String? _selectedGender;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100,
+      decoration: BoxDecoration(
+        color: Colors.blue[100],
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedGender,
+          hint: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.sort,
+                  size: 20,
+                ),
+                Text(
+                  "مرتب سازی",
+                  style: TextStyle(
+                      fontFamily: "Brb",
+                      fontSize: 15,
+                      color: Colors.blue[900],
+                      fontWeight: FontWeight.w100),
+                ),
+
+              ],
+            ),
+          ),
+          isExpanded: true,
+          onChanged: (value) {
+            setState(() {
+              _selectedGender = value;
+            });
+          },
+          icon: const SizedBox.shrink(),
+          items: [
+            CustomDropdownMenuItem<String>(
+              value: 'قیمت',
+              label: 'قیمت',
+            ),
+            CustomDropdownMenuItem<String>(
+              value: 'ساعت',
+              label: 'ساعت',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 Widget search_page(BuildContext context) {
   return Directionality(
       textDirection: TextDirection.rtl, child: status_icons(context));
@@ -78,7 +142,31 @@ Widget status_icons(BuildContext context) {
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
-              )
+              ),
+              Expanded(child: Container()),
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const safebilit(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1.0, 1.0);
+                          var end = Offset.zero;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        }));
+                  },
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                    size: 30,
+                  ))
             ],
           ),
           Row(
@@ -457,10 +545,39 @@ Widget whole_search(BuildContext context) {
           ),
         ),
 
+        search_sort(),
+
         Column(
           children: flight_info,
         )
       ],
     ),
   ));
+}
+
+class CustomDropdownMenuItem<T> extends DropdownMenuItem<T> {
+  @override
+  final T value;
+  final String label;
+
+  CustomDropdownMenuItem({
+    super.key,
+    required this.value,
+    required this.label,
+  }) : super(
+          value: value,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 8.0),
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+        );
 }
