@@ -187,88 +187,312 @@ Widget whole_page(BuildContext context) {
 
   List<Widget> pasenger_getinfo = [];
   for (int i = 0; i < number_of_passenger; i++) {
-    pasenger_getinfo.add(
-
-            Container(
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                      color: Color.fromARGB(255, 125, 122, 122),
-                      width: 2,
-                    )),
-                    child: SizedBox(
-            
-                        child: Container(  //pasenger
-                          child: ExpansionTile(
-                              title: Row(children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "نام و نام خانوادگی",
-                                        style: TextStyle(
-                                            fontFamily: "Brb",
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          "شماره ملی / پاسپورت",
-                                          style: TextStyle(
-                                              fontFamily: "Brb",
-                                              fontSize: 15,
-                                              color: Color.fromARGB(255, 87, 82, 82)),
-                                        ),
-                                      ),
-                                    ],
+    if (i == 0) {
+      pasenger_getinfo.add(Container(
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                color: Color.fromARGB(255, 125, 122, 122),
+                width: 2,
+              )),
+              child: SizedBox(
+                child: Container(
+                  //pasenger
+                  child: ExpansionTile(
+                      title: Row(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "نام و نام خانوادگی",
+                                style: TextStyle(
+                                    fontFamily: "Brb",
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  "شماره ملی / پاسپورت",
+                                  style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Color.fromARGB(255, 87, 82, 82)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1,
+                                    //style: BorderStyle.solid
+                                  )),
+                              child: SizedBox(
+                                width: 60,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "بزرگسال",
+                                    style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1,
-                                            //style: BorderStyle.solid
-                                          )),
-                                      child: SizedBox(
-                                        width: 60,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "بزرگسال",
-                                            style: TextStyle(
-                                              fontFamily: "Brb",
-                                              fontSize: 15,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                      children: [
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 91, 84, 84),
+                                      width: 1,
+                                    )),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: "Brb"))),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 91, 84, 84),
+                                      width: 1,
+                                    )),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام خانوادگی",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: "Brb"))),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 91, 84, 84),
+                                      width: 1,
+                                    )),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      labelText: "کد ملی",
+                                      labelStyle: TextStyle(
+                                          fontSize: 20, fontFamily: "Brb"),
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return null;
+                                      }
+                                      if (value.isEmpty ||
+                                          !RegExp(r'^\d{10}$')
+                                              .hasMatch(value)) {
+                                        //regex must be checked
+                                        return "کد ملی نامعتبر است.";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+
+
+
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 91, 84, 84),
+                                      width: 1,
+                                    )),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "ایمیل",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: "Brb"))),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 91, 84, 84),
+                                      width: 1,
+                                    )),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "شماره موبایل",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: "Brb"))),
+                                ),
+                              ),
+                            ),
+
+                            genderBox(),
+
+                            //birthday
+                          ],
+                        )
+                      ]),
+                ),
+              ),
+            )),
+      ));
+    } else {
+      pasenger_getinfo.add(
+        Container(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Color.fromARGB(255, 125, 122, 122),
+                  width: 2,
+                )),
+                child: SizedBox(
+                  child: Container(
+                    //pasenger
+                    child: ExpansionTile(
+                        title: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "نام و نام خانوادگی",
+                                  style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    "شماره ملی / پاسپورت",
+                                    style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Color.fromARGB(255, 87, 82, 82)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1,
+                                      //style: BorderStyle.solid
+                                    )),
+                                child: SizedBox(
+                                  width: 60,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "بزرگسال",
+                                      style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Colors.black,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ]),
-                              children: [
-                                pasenger_infoget(context),
-                              ]),
-                        ),               
-            
-                    ),
-                  )),
-            ),
-            
-    );
+                              ),
+                            ),
+                          ),
+                        ]),
+                        children: [
+                          pass_getinfo(),
+                        ]),
+                  ),
+                ),
+              )),
+        ),
+      );
+    }
   }
 
   return Scaffold(
@@ -624,7 +848,6 @@ Widget whole_page(BuildContext context) {
                         ),
                       ))),
             ),
-            
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -649,11 +872,7 @@ Widget whole_page(BuildContext context) {
                 ],
               ),
             ),
-
-            Column(
-              children: pasenger_getinfo
-            ),
-
+            Column(children: pasenger_getinfo),
             SizedBox(
               height: 50,
             ),
@@ -662,21 +881,23 @@ Widget whole_page(BuildContext context) {
               height: 150,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const confirm_page(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = const Offset(1.0, 1.0);
-                        var end = Offset.zero;
-                        var curve = Curves.ease;
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      }));
+                  // if (formkey_passenger_getinfo.currentState!.validate()) {
+                    Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const confirm_page(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1.0, 1.0);
+                          var end = Offset.zero;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        }));
+                  //}
                 },
                 style: ElevatedButton.styleFrom(
                   primary:
@@ -773,6 +994,89 @@ Widget whole_page(BuildContext context) {
   );
 }
 
+class pass_getinfo extends StatefulWidget {
+  const pass_getinfo({super.key});
+
+  @override
+  State<pass_getinfo> createState() => _pass_getinfoState();
+}
+
+class _pass_getinfoState extends State<pass_getinfo> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                border: Border.all(
+                  color: Color.fromARGB(255, 91, 84, 84),
+                  width: 1,
+                )),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontFamily: "Brb", fontSize: 20),
+                  decoration: InputDecoration(
+                      hintText: "نام",
+                      hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
+            ),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                border: Border.all(
+                  color: Color.fromARGB(255, 91, 84, 84),
+                  width: 1,
+                )),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontFamily: "Brb", fontSize: 20),
+                  decoration: InputDecoration(
+                      hintText: "نام خانوادگی",
+                      hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
+            ),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                border: Border.all(
+                  color: Color.fromARGB(255, 91, 84, 84),
+                  width: 1,
+                )),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontFamily: "Brb", fontSize: 20),
+                  decoration: InputDecoration(
+                      hintText: "کد ملی",
+                      hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
+            ),
+          ),
+        ),
+
+        genderBox(),
+
+        //birthday
+      ],
+    );
+  }
+}
+
 class genderBox extends StatefulWidget {
   const genderBox({super.key});
 
@@ -845,80 +1149,6 @@ class _genderBoxState extends State<genderBox> {
       ],
     );
   }
-}
-
-pasenger_infoget(BuildContext context) {
-  var _selectedGender;
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "نام",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "نام خانوادگی",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "کد ملی",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      genderBox(),
-
-      //birthday
-    ],
-  );
 }
 
 class CustomDropdownMenuItem<T> extends DropdownMenuItem<T> {

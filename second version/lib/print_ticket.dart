@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/mainpage.dart';
 
 void main() {
@@ -139,28 +140,7 @@ Widget status_icons(BuildContext context) {
 }
 
 Widget print_flight(BuildContext context) {
-  String departure_city = "تهران";
-  String arrival_city = "کیش";
-  String airline_name = "ماهان";
-  String return_airline_name = "زاگرس";
-  String date_and_time_departure = "دوشنبه ۲۶ تیر - ۱۱:۴۵";
-  String return_date_and_time_departure = "شنبه ۳۱ تیر - ۱۶:۱۵";
-  String flight_numberID = "W5 1080";
-  String return_flight_numberID = "W5 1081";
-  String flight_class_type = "اکونومی";
-  String return_flight_class_type = "بیزینس";
-  String baggage_allowance = " ۲۵ کیلوگرم";
-  String return_baggage_allowance = " ۳۰ کیلوگرم";
-  String special_request = "ندارد";
-  String return_special_request = "ندارد";
-  String refundability = "-";
-  String return_refundability = "-";
-  bool has_return_flight = true;
-  String date_departure = "دوشنبه ۲۶ تیر";
-  String return_date = "شنبه ۳۱ تیر";
-  String airline_logo = "assets/mahan.jpg";
-  String return_airline_logo = "assets/zagros.jpg";
-  String reservation_number = "۱۲۶۵۸";
+  
 
   return Scaffold(
     body: SingleChildScrollView(

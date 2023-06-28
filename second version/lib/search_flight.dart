@@ -268,12 +268,13 @@ Widget whole_search(BuildContext context) {
   String arrival_city = "کیش";
 
   List<Widget> flight_info = [];
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < flight_price.length ; i++) {
     flight_info.add(Padding(
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
           //save flight details
+          //save i index
           Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
                   const pasenger(),

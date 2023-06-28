@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_local_variable, empty_statements, unnecessary_new, avoid_web_libraries_in_flutter, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/account_page.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/pasenger.dart';
 import 'package:flutter_application_1/safebilit.dart';
@@ -101,6 +102,9 @@ Widget main_items(BuildContext context) {
 }
 
 Widget ButtonBanner(BuildContext context) {
+  bool isLogin = true;
+
+
   return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -127,7 +131,7 @@ Widget ButtonBanner(BuildContext context) {
                           Navigator.of(context).push(PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      const login(),
+                                      ( isLogin ?  account_page() : login()),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 var begin = const Offset(0.0, 0.0);

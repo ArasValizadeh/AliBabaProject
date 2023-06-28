@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_const_literals_to_create_immutables, annotate_overrides, sort_child_properties_last
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_const_literals_to_create_immutables, annotate_overrides, sort_child_properties_last, unused_element, unused_local_variable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/mainpage.dart';
@@ -15,12 +15,13 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  bool passwordVisible = false;
-  void initState() {
-    super.initState();
-    passwordVisible = true;
-  }
 
+  bool passwordVisible = false;
+    void initState() {
+      super.initState();
+      passwordVisible = true;
+    }
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -75,6 +76,10 @@ class _signupState extends State<signup> {
   }
 
   Widget signup(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    String? input_password;
+
+
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -90,7 +95,7 @@ class _signupState extends State<signup> {
               height: 50,
             ),
             Container(
-              height: 300,
+              height: 400,
               width: 500,
               margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Card(
@@ -98,90 +103,116 @@ class _signupState extends State<signup> {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 elevation: 20,
                 child: Center(
-                  child: Column(children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 30, 0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "شماره موبایل یا آدرس‌ایمیل به همراه کلمه عبور خود را وارد کنید",
-                          style: TextStyle(
-                              fontFamily: "Brb",
-                              fontSize: 13,
-                              color: Color.fromARGB(255, 27, 180, 246)),
+                  child: Form(
+                    key: formKey,
+                    child: Column(children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 30, 0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            "شماره موبایل یا آدرس‌ایمیل به همراه کلمه عبور خود را وارد کنید",
+                            style: TextStyle(
+                                fontFamily: "Brb",
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 27, 180, 246)),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          textAlignVertical: TextAlignVertical.bottom,
-                          decoration: InputDecoration(
-                            hintText: "آدرس ایمیل یا شماره موبایل",
-                            prefixIcon: Icon(Icons.supervisor_account_rounded),
-                          )),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          obscureText: passwordVisible,
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          decoration: InputDecoration(
-                              hintText: "کلمه عبور",
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          obscureText: false,
+                            decoration: InputDecoration( 
+                              labelText: "آدرس ایمیل یا شماره موبایل",
+                              prefixIcon: Icon(Icons.supervisor_account_rounded),
+                            ),
+                            validator: (value){
+                              if(value!.isEmpty || !(RegExp(r'^\d{11}$').hasMatch(value) || RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) ){
+                                  return "لطفا ایمیل خود را صحیح وارد کنید.";
+                              }else{
+                                 return null;
+                              }
+                            },
+                         ),
+                      ),
+                          
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                            obscureText: passwordVisible,
+                            decoration: InputDecoration( 
+                              labelText: "کلمه عبور",
                               prefixIcon: Icon(Icons.key_rounded),
                               suffixIcon: IconButton(
-                                icon: Icon(passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                              ))),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          obscureText: passwordVisible,
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          decoration: InputDecoration(
-                              hintText: "تکرار کلمه عبور",
-                              prefixIcon:
-                                  Icon(Icons.check_circle_outline_rounded),
+                                  icon: Icon(passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
+                            ),
+                            validator: (value){
+                              if(value!.isEmpty || !RegExp(r'^(?=.*[aA].*[aA].*)(?=.*[01])[a-zA-Z0-9]{8,}$').hasMatch(value)){ //regex must be checked
+                                  return "رمز عبور نامعتبر است.";
+                              }else{
+                                input_password = value;
+                                 return null;
+                              }
+                            },
+                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                            obscureText: passwordVisible,
+                            decoration: InputDecoration( 
+                              labelText: "تکرار کلمه عبور",
+                              prefixIcon: Icon(Icons.check_circle_outline_rounded),
                               suffixIcon: IconButton(
-                                icon: Icon(passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                              ))),
-                    )
-                  ]),
+                                  icon: Icon(passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
+                            ),
+                            validator: (value){
+                              if(input_password != value){ //regex must be checked
+                                  return "رمز عبور یکسان نیست.";
+                              }else{
+                                 return null;
+                              }
+                            },
+                         ),
+                      ),
+                          
+                     
+                    ]),
+                  ),
                 ),
               ),
             ),
             const SizedBox(
-              height: 250,
+              height: 150,
             ),
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(PageRouteBuilder(
+                  if(formKey.currentState!.validate()){
+                             Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           const main_page(),
                       transitionsBuilder:
@@ -196,6 +227,8 @@ class _signupState extends State<signup> {
                           child: child,
                         );
                       }));
+                  }
+                  
                 },
                 child: Column(
                   children: [
