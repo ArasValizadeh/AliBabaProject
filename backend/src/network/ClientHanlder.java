@@ -21,7 +21,7 @@ public class ClientHanlder extends Thread{
             Scanner scanner = new Scanner(request);
             String command = scanner.nextLine();
             String data = scanner.nextLine();
-            System.out.println("command"+command +"\ndata :"+data);
+            System.out.println("command :"+command +"\ndata :"+data);
             String response = new Controller().run(command,data);
             dataOutputStream.writeUTF(response);
             dataOutputStream.flush();

@@ -7,8 +7,10 @@ public class Client {
         Socket socket = new Socket("localhost",8000);
         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        //ParvazInformation\nOrigin-Destination-Date
-        dataOutputStream.writeUTF("ParvazInformation\ntehran-kermanshah-1402/12/21");
+        //BuyTickets\nUsername-Company-Mabda-Maghsad-Time-Date-Count
+        //shiraz-tehran-12:30-1402/5/9-780000-40-0
+        //MyTransactions\nUserName
+        dataOutputStream.writeUTF("MyFlights\naras");
         System.out.println(dataInputStream.readUTF());
     }
 }

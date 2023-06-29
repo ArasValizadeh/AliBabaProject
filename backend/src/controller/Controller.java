@@ -3,15 +3,162 @@ package controller;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
-    private String getClientInformation(){
+    private boolean AddTransaction(String data) throws Exception {
+        String[] splited = data.split("-");
+        File Tarakonesh = new File("src/data/clients/"+splited[0]+"/Tarakonesh.text");
+        FileWriter fileWriter1 = new FileWriter(Tarakonesh , true);
+        if (splited[1].startsWith("n")){
+            String value = "-"+splited[1].substring(1);
+            fileWriter1.write(value+'\n');
+            fileWriter1.flush();
+            return true;
+        }
+        else if (splited[1].startsWith("p")){
+            String value = "+"+splited[1].substring(1);
+            fileWriter1.write(value+'\n');
+            fileWriter1.flush();
+            return true;
+        }
+        return false;
+    }
+    private boolean ChangeClient(String data) throws Exception {
+        //ChangeClientInformation\nUserName-PhoneNumbe-09121110011
+        String[] splited =  data.split("-");
+        File Clients = new File("src/data/clients");
+        for (File file : Clients.listFiles()){
+            String Username = file.getName();
+            if (Username.equals(splited[0])){
+                File User = new File("src/data/clients/"+Username+"/Information.text");
+                Scanner scanner = new Scanner(User);
+                //splitedvoroodi
+                //username-password-phonenumber-tarikhtavalod-mojodi
+                String vorodi = scanner.nextLine();
+                String[] splitedvorodi = vorodi.split("-");
+                File User2 = new File("src/data/clients/"+Username+"/Information2.text");
+                User2.createNewFile();
+                FileWriter fileWriter = new FileWriter(User2);
+                if (splited[1].equals("Password")){
+                    String input = splitedvorodi[0] + '-'+splited[2] +'-'+splitedvorodi[2]+'-'+splitedvorodi[3]+'-'+splitedvorodi[4];
+                    fileWriter.write(input);
+                    fileWriter.flush();
+                    User.delete();
+                    User2.renameTo(new File("src/data/clients/"+Username+"/Information.text"));
+                    return true;
+                }else if (splited[1].equals("PhoneNumber")){
+                    String input = splitedvorodi[0] + '-'+splitedvorodi[1] +'-'+splited[2]+'-'+splitedvorodi[3]+'-'+splitedvorodi[4];
+                    fileWriter.write(input);
+                    fileWriter.flush();
+                    User.delete();
+                    User2.renameTo(new File("src/data/clients/"+Username+"/Information.text"));
+                    return true;
+                }else if (splited[1].equals("TarikhTavalod")){
+                    String input = splitedvorodi[0] + '-'+splitedvorodi[1] +'-'+splitedvorodi[2]+'-'+splited[2]+'-'+splitedvorodi[4];
+                    fileWriter.write(input);
+                    fileWriter.flush();
+                    User.delete();
+                    User2.renameTo(new File("src/data/clients/"+Username+"/Information.text"));
+                    return true;
+                } else if (splited[1].equals("Mojodi")) {
+                    //n210000 yani 210000 ta az mojodi kam kon
+                    //p210000 yani 210000 ta be mojodi ezafe kon
+                    int mojodijadid = 0 ;
+                    if (splited[2].startsWith("n")){
+                        int mojodiavalie = Integer.parseInt(splitedvorodi[4]);
+                        mojodijadid = mojodiavalie - Integer.parseInt(splited[2].substring(1));
+                    }
+                    else{
+                        int mojodiavalie = Integer.parseInt(splitedvorodi[4]);
+                        mojodijadid = mojodiavalie + Integer.parseInt(splited[2].substring(1));
+                    }
+                    AddTransaction(Username+'-'+splited[2]);
+                    String input = splitedvorodi[0] + '-'+splitedvorodi[1] +'-'+splitedvorodi[2]+'-'+splitedvorodi[3]+'-'+String.valueOf(mojodijadid);
+                    fileWriter.write(input);
+                    fileWriter.flush();
+                    User.delete();
+                    User2.renameTo(new File("src/data/clients/"+Username+"/Information.text"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean BuyTickets(String data) throws Exception{
+        //BuyTickets\nUsername-Company-Mabda-Maghsad-Time-Date-Count
+        boolean happen = false;
+        String[] splited = data.split("-");
+        File UserInformation = new File("src/data/clients/"+splited[0]+"/Information.text");
+        File UserParvaz = new File("src/data/clients/"+splited[0]+"/Parvazha.text");
+        File SoldParvazAdmin = new File("src/data/admins/"+splited[1]+"/SoldTickets.text");
+        File AvailableParvaz = new File("src/data/parvaz/"+splited[1]+".text");
+        Scanner AvailScan = new Scanner(AvailableParvaz);
+        Scanner UserInfScan = new Scanner(UserInformation);
+        File CopyAvailable = new File("src/data/parvaz/"+splited[1]+"2.text");
+        CopyAvailable.createNewFile();
+        FileWriter AvailableWriter = new FileWriter(CopyAvailable);
+        Scanner Userp2 = new Scanner(UserParvaz);
+        FileWriter UserParvWrite = new FileWriter(UserParvaz,true);
+        FileWriter AdminSold = new FileWriter(SoldParvazAdmin , true);
+        while(AvailScan.hasNext()){
+            String vorodi = AvailScan.nextLine();
+            String[] splitedvorodi = vorodi.split("-");
+            if (splitedvorodi[0].equals(splited[2]) && splitedvorodi[1].equals(splited[3]) && splitedvorodi[2].equals(splited[4]) && splitedvorodi[3].equals(splited[5])){
+                System.out.println("i found");
+                String information = UserInfScan.nextLine();
+                String[] splitInf = information.split("-");
+                int mojodi = Integer.parseInt(splitInf[4]);
+                int price = Integer.parseInt(splitedvorodi[4]) * Integer.parseInt(splited[6]);
+                if(mojodi >=price){
+                    happen = true;
+                    if(Userp2.hasNext()) {
+                        UserParvWrite.write('\n'+ data.substring(data.indexOf("-") + 1, data.length()));
+                        UserParvWrite.flush();
+                    }else{
+                        UserParvWrite.write(data.substring(data.indexOf("-") + 1, data.length()));
+                        UserParvWrite.flush();
+                    }
+                    AdminSold.write('\n'+splited[2] + "-"+splited[3]+"-"+splited[4]+"-"+splited[5] + "-"+splited[6]);
+                    AdminSold.flush();
+                    //ChangeClientInformation\nUserName-PhoneNumbe-09121110011
+                    ChangeClient(splited[0]+"-"+"Mojodi"+"-n"+String.valueOf(price));
+                    String remain = String.valueOf(Integer.parseInt(splitedvorodi[5]) - Integer.parseInt(splited[6]));
+                    String Sel = String.valueOf(Integer.parseInt(splited[6])+Integer.parseInt(splitedvorodi[6]));
+                    AvailableWriter.write(splitedvorodi[0]+'-'+splitedvorodi[1]+'-'+splitedvorodi[2]+'-'+splitedvorodi[3]+'-'+splitedvorodi[4]+'-'+remain+'-'+Sel+'\n');
+                    AvailableWriter.flush();
+                }else{
+                    return false;
+                }
+            }else {
+                AvailableWriter.write(vorodi + '\n');
+                AvailableWriter.flush();
+            }
+        }
+        AvailableParvaz.delete();
+        CopyAvailable.renameTo(new File("src/data/parvaz/"+splited[1]+".text"));
+        if(happen){
+            return true;
+        }
+        return false;
+    }
+    private String getClientInformation(String data) throws Exception{
+        String Username = data;
+        File Clients = new File("src/data/clients");
+        for (File file : Clients.listFiles()) {
+            String UsernameFiles = file.getName();
+            if (UsernameFiles.equals(Username)){
+                File Infor = new File("src/data/clients/"+Username+"/Information.text");
+                Scanner scanner = new Scanner(Infor);
+                if (scanner.hasNext()){
+                    return scanner.nextLine();
+                }
+            }
+        }
         return "";
     }
     private String getParvazInformation(String data) throws Exception{
-        //ParvazInformation\nOrigin-Destination-Date
+        //ParvazInformation\nOrigin-Destination-Date-Count
         String[] splited = data.split("-");
         String mabda = splited[0];
         String maghsad = splited[1];
@@ -25,7 +172,7 @@ public class Controller {
             while (fileScanner.hasNext()){
                 String input = fileScanner.nextLine();
                 String[] inputSplited = input.split("-");
-                if (inputSplited[0].equals(mabda) && inputSplited[1].equals(maghsad) && inputSplited[3].equals(Date) && Integer.parseInt(inputSplited[5]) > 0){
+                if (inputSplited[0].equals(mabda) && inputSplited[1].equals(maghsad) && inputSplited[3].equals(Date) && Integer.parseInt(inputSplited[5]) - Integer.parseInt(splited[3]) >= 0){
                     s.add(input);
                     matlob.put(company,s);
                 }
@@ -58,6 +205,8 @@ public class Controller {
         InformationFile.createNewFile();
         FileWriter fileWriter = new FileWriter(InformationFile);
         fileWriter.write(information.get("UserName") + "-"+information.get("Password"));
+        fileWriter.write( "-"+"null");
+        fileWriter.write( "-"+"null");
         fileWriter.flush();
         fileWriter.close();
         new File(file1.getPath()+"/Parvazha.text").createNewFile();
@@ -89,6 +238,25 @@ public class Controller {
         }
         return 3;
     }
+    private String MyFlights(String data) throws Exception{
+        File Parvaz = new File("src/data/clients/"+data+"/Parvazha.text");
+        Scanner scanner = new Scanner(Parvaz);
+        ArrayList<String> output = new ArrayList<>();
+        while(scanner.hasNext()){
+            output.add(scanner.nextLine());
+        }
+        return output.toString();
+    }
+
+    private String MyTransactions(String data) throws  Exception{
+        File file = new File("src/data/clients/"+data+"/Tarakonesh.text");
+        Scanner scanner = new Scanner(file);
+        ArrayList<String> output = new ArrayList<>();
+        while (scanner.hasNext()){
+            output.add(scanner.nextLine());
+        }
+        return output.toString();
+    }
     public String run(String command , String data) throws Exception {
         switch (command) {
             //Signup\nUserName-Password
@@ -106,16 +274,39 @@ public class Controller {
                 else if (state == 2){
                     return "رمز اشتباه می‌باشد";
                 }
-                else{
+                else {
                     return "کاربر یافت نشد";
                 }
+            //ClientInformation\nUsername
             case "ClientInformation":
-                return getClientInformation();
+                return getClientInformation(data);
             //ParvazInformation\nOrigin-Destination-Date
             case "ParvazInformation":
                 return getParvazInformation(data);
+            //ChangeClientInformation\nUserName-PhoneNumbe-09121110011
             case "ChangeClientInformation":
-                return "عملیات موفق";
+                if (ChangeClient(data)){
+                    return "عملیات موفق";
+                }
+                return "خطا!";
+            //BuyTickets\nUsername-Company-Mabda-Maghsad-Time-Date-Count
+            case "BuyTickets":
+                if(BuyTickets(data)){
+                    return "عملیات خرید با موفقیت انجام شد";
+                }
+                return "عملیات خرید با خطا مواجه شد";
+            //AddTransaction\nUsername-p4000 or Username-n4000
+            case "AddTransaction":
+                if(AddTransaction(data)){
+                    return "به تراکنش کاربر اضافه شد";
+                }
+                return "عملیات اضافه کردن تراکنش با خطا مواجه شد";
+            //MyFlights\nUserName
+            case "MyFlights":
+                return MyFlights(data);
+            //MyTransactions\nUserName
+            case "MyTransactions":
+                return MyTransactions(data);
         }
         return "Invalid Request";
     }
