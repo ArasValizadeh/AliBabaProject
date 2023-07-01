@@ -1,7 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, overridden_fields, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, library_private_types_in_public_api, unused_import, import_of_legacy_library_into_null_safe, camel_case_types, avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, unrelated_type_equality_checks, must_be_immutable, unused_field, depend_on_referenced_packages
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, overridden_fields, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, library_private_types_in_public_api, unused_import, import_of_legacy_library_into_null_safe, camel_case_types, avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, unrelated_type_equality_checks, must_be_immutable, unused_field, depend_on_referenced_packages, non_constant_identifier_names, unused_element
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/mainpage.dart';
+import 'package:flutter_application_1/pasenger.dart';
 import 'package:flutter_application_1/search_flight.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -10,6 +14,18 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 void main() {
   runApp(const safebilit());
 }
+
+final TextEditingController _controller_departure_city = TextEditingController(text: "");
+final TextEditingController _controller_arrivals_city = TextEditingController(text: "");
+final TextEditingController _controller_departure_date = TextEditingController(text: "");
+final TextEditingController _controller_passenger_count = TextEditingController(text: "");
+final TextEditingController _controller_return_departure_city = TextEditingController(text: "");
+final TextEditingController _controller_return_arrivals_city = TextEditingController(text: "");
+final TextEditingController _controller_return_departure_date = TextEditingController(text: "");
+
+String _log = "";
+
+late bool hastest;
 
 class safebilit extends StatefulWidget {
   const safebilit({Key? key}) : super(key: key);
@@ -23,10 +39,25 @@ class _safebilitState extends State<safebilit> {
   Type status = Type.two;
   String selectedCity = '';
   bool taghivmCondition = true;
-  bool typeCondition = false;
+  bool typeCondition = false;//dakheli khareji
 
-  void printsalam() {
-    print("salam");
+
+  send_user_ticket_getter_info(String message) async {
+    String request = message + "\u0000";
+    print("request");
+
+    await Socket.connect(ip_address, 8000).then((serverSocket) {
+      print("connected");
+      serverSocket.write(request);
+      serverSocket.flush();
+      print("write");
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        setState(() {
+          _log += String.fromCharCodes(response) + "\n";
+        });
+      });
+    });
   }
 
   void setType(Type type) {
@@ -36,6 +67,7 @@ class _safebilitState extends State<safebilit> {
     if (type == Type.two) {
       setState(() {
         typeCondition = false;
+        print("object");
       });
     } else {
       setState(() {
@@ -51,10 +83,12 @@ class _safebilitState extends State<safebilit> {
     if (count == 1) {
       setState(() {
         taghivmCondition = true;
+        has_return_flight = false;
       });
     } else {
       setState(() {
         taghivmCondition = false;
+        has_return_flight = true;
       });
     }
   }
@@ -115,36 +149,6 @@ class _safebilitState extends State<safebilit> {
               )
             ],
           ),
-  //             FloatingActionButton.extended(
-  //               label: Text(
-  //                 'پرواز',
-  //                 style: TextStyle(color: Colors.black, fontSize: 20),
-  //               ),
-  //               backgroundColor: Colors.orange,
-  //               elevation: 0,
-  //               icon: Icon(
-  //                 CupertinoIcons.arrow_right,
-  //                 size: 25,
-  //                 color: Color.fromARGB(255, 255, 255, 255),
-  //               ),
-  //               onPressed: () {
-  //                 Navigator.of(context).push(PageRouteBuilder(  //fix this part
-  //                     pageBuilder: (context, animation, secondaryAnimation) =>
-  //                         const main_page(),
-  //                     transitionsBuilder:
-  //                         (context, animation, secondaryAnimation, child) {
-  //                       var begin = const Offset(1.0, 1.0);
-  //                       var end = Offset.zero;
-  //                       var curve = Curves.ease;
-  //                       var tween = Tween(begin: begin, end: end)
-  //                           .chain(CurveTween(curve: curve));
-  //                       return SlideTransition(
-  //                         position: animation.drive(tween),
-  //                         child: child,
-  //                       );
-  //                     }));
-  //               },
-  //             ),
 
 
             ],
@@ -175,6 +179,9 @@ class _safebilitState extends State<safebilit> {
                           type: Type.two,
                           ontap: () {
                             setType(Type.two);
+                            setState(() {
+                              has_return_flight = true;
+                            });
                           },
                         ),
                         AirItem(
@@ -182,6 +189,9 @@ class _safebilitState extends State<safebilit> {
                           type: Type.one,
                           ontap: () {
                             setType(Type.one);
+                            setState(() {
+                              has_return_flight = false;
+                            });
                           },
                         ),
                       ],
@@ -198,6 +208,11 @@ class _safebilitState extends State<safebilit> {
                         type: 1,
                         ontap: () {
                           setCount(1);
+                          setState(() {
+                            main_stuff.has_return_flight = false;
+                            print("only one way");
+                          });
+
                         },
                       ),
                       Count(
@@ -205,6 +220,10 @@ class _safebilitState extends State<safebilit> {
                         type: 2,
                         ontap: () {
                           setCount(2);
+                          setState(() {
+                            main_stuff.has_return_flight = true;
+                          });
+                          print("has return");
                         },
                       ),
                     ],
@@ -286,7 +305,12 @@ class _safebilitState extends State<safebilit> {
                         padding: const EdgeInsets.only(bottom: 20),
                         child: TextButton(
                           onPressed: () {
-                           
+                            send_user_ticket_getter_info(_controller_departure_city.text + "-" + _controller_arrivals_city.text + "-" + _controller_departure_date.text + "-" +_controller_passenger_count.text);
+                            print("info ticket ersaal shod");
+                            if(has_return_flight){
+                              send_user_ticket_getter_info(_controller_return_departure_city.text + "-" + _controller_return_arrivals_city.text + "-" + _controller_return_departure_date.text + "-" +_controller_passenger_count.text);
+                              print("info ticket bargasht ham ersaal shod");
+                            }
                           },
                           child: SizedBox(
                             width: 300,
@@ -303,6 +327,13 @@ class _safebilitState extends State<safebilit> {
                                 color: Color.fromARGB(255, 0, 0, 0),
                               ),
                               onPressed: () {
+                                setState(() {
+
+                                });
+                                //save information
+                                
+                                
+
                                  Navigator.of(context).push(PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
@@ -360,6 +391,7 @@ class AirItem extends StatelessWidget {
     String filed;
     if (type == Type.two) {
       filed = "پرواز داخلی";
+      
     } else {
       filed = "پرواز خارجی";
     }
@@ -391,7 +423,7 @@ class AirItem extends StatelessWidget {
   }
 }
 
-class Count extends StatelessWidget {
+class Count extends StatefulWidget {
   final int type;
   final bool isActive;
   final Function() ontap;
@@ -404,13 +436,18 @@ class Count extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<Count> createState() => _CountState();
+}
+
+class _CountState extends State<Count> {
+  @override
   Widget build(BuildContext context) {
     Color textColor;
     String filed;
     double underrechei;
     double underrecwid;
     Color undercol;
-    if (type == 1) {
+    if (widget.type == 1) {
       underrechei = 2;
       underrecwid = 50;
       filed = "یک طرفه";
@@ -419,7 +456,7 @@ class Count extends StatelessWidget {
       underrecwid = 85;
       filed = "رفت و برگشت";
     }
-    if (isActive) {
+    if (widget.isActive) {
       textColor = const Color.fromARGB(255, 46, 134, 211);
       undercol = const Color.fromARGB(255, 46, 134, 211);
     } else {
@@ -428,11 +465,11 @@ class Count extends StatelessWidget {
     }
     return InkWell(
       borderRadius: BorderRadius.all(Radius.zero),
-      onTap: ontap,
+      onTap: widget.ontap ,
       child: Container(
         width: 100,
         height: 40,
-        decoration: isActive
+        decoration: widget.isActive
             ? BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)))
             : null,
         child: Column(
@@ -488,6 +525,7 @@ class _MyDropdownMenuState2 extends State<MyDropdownMenu2> {
                   onChanged: (value) {
                     setState(() {
                       _selectedLocation = value;
+                      BuyTicket.departure_city = value!;
                     });
                   },
                   icon: const SizedBox.shrink(),
@@ -603,6 +641,10 @@ class _MyDropdownMenuState extends State<MyDropdownMenu> {
                   isExpanded: true,
                   onChanged: (value) {
                     setState(() {
+                      if(main_stuff.has_return_flight){
+                        
+                      }
+                      print(value);
                       _selectedLocation = value;
                     });
                   },
@@ -692,10 +734,12 @@ class _taghivm2State extends State<taghivm2> {
               });
           if (picked != null && picked != selectedDate) {
             setState(() {
-              dateController.text = 'تاریخ برگشت : ';
+              dateController.text = 'تاریخ برگشت : '; //bargasht
               String day = picked.day.toString();
               String month = picked.month.toString();
               String year = picked.year.toString();
+              BuyTicket.return_departure_date = year + "/" + month + "/" + day;
+              print(year + "/" + month + "/" + day);
               if (month == "1") {
                 month = "فروردین";
               } else if (month == "2") {
@@ -792,6 +836,8 @@ class _taghvimState extends State<taghvim> {
               String day = picked.day.toString();
               String month = picked.month.toString();
               String year = picked.year.toString();
+              BuyTicket.departure_date = year + "/" + month + "/" + day;
+              print("raft : " + year + "/" + month + "/" + day);
               if (month == "1") {
                 month = "فروردین";
               } else if (month == "2") {
@@ -818,6 +864,7 @@ class _taghvimState extends State<taghvim> {
                 month = "اسفند";
               }
               dateController.text += year + ' - ' + month + ' - ' + day;
+              print(dateController.text);
             });
           }
         },
@@ -846,6 +893,9 @@ class _ticketCounterState extends State<ticketCounter> {
   void increase2() {
     setState(() {
       if (_counter2 <= 9) {
+        setState(() {
+          BuyTicket.number_of_passenger_child++;
+        });
         _counter2++;
       }
     });
@@ -854,6 +904,9 @@ class _ticketCounterState extends State<ticketCounter> {
   void decrease2() {
     setState(() {
       if (_counter2 > 0) {
+        setState(() {
+          BuyTicket.number_of_passenger_child--;
+        });
         _counter2--;
       }
     });
@@ -862,6 +915,9 @@ class _ticketCounterState extends State<ticketCounter> {
   void increase() {
     setState(() {
       if (_counter <= 9) {
+        setState(() {
+          BuyTicket.number_of_passenger_adult++;
+        });
         _counter++;
       }
     });
@@ -870,6 +926,9 @@ class _ticketCounterState extends State<ticketCounter> {
   void decrease() {
     setState(() {
       if (_counter > 0) {
+        setState(() {
+          BuyTicket.number_of_passenger_adult--;
+        });
         _counter--;
       }
     });
@@ -940,4 +999,5 @@ class _ticketCounterState extends State<ticketCounter> {
       ),
     );
   }
+  
 }

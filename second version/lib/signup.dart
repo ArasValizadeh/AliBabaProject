@@ -1,7 +1,15 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_const_literals_to_create_immutables, annotate_overrides, sort_child_properties_last
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_const_literals_to_create_immutables, annotate_overrides, sort_child_properties_last, unused_element, unused_local_variable, non_constant_identifier_names, prefer_interpolation_to_compose_strings, avoid_print
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/mainpage.dart';
+
+final TextEditingController _controller_user = TextEditingController(text: "");
+final TextEditingController _controller_pass = TextEditingController(text: "");
+String _log = "";
+late String temp_username;
 
 void main() {
   runApp(const signup());
@@ -15,10 +23,10 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  bool passwordVisible = false;
-  void initState() {
-    super.initState();
-    passwordVisible = true;
+  void _changeVariable(String s) {
+    setState(() {
+      _log = s;
+    });
   }
 
   @override
@@ -34,7 +42,7 @@ class _signupState extends State<signup> {
                 onPressed: () {
                   Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          const main_page() ,
+                          const main_page(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         var begin = const Offset(1.0, 1.0);
@@ -75,6 +83,8 @@ class _signupState extends State<signup> {
   }
 
   Widget signup(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -90,7 +100,7 @@ class _signupState extends State<signup> {
               height: 50,
             ),
             Container(
-              height: 300,
+              height: 400,
               width: 500,
               margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Card(
@@ -98,104 +108,92 @@ class _signupState extends State<signup> {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 elevation: 20,
                 child: Center(
-                  child: Column(children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 30, 0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "شماره موبایل یا آدرس‌ایمیل به همراه کلمه عبور خود را وارد کنید",
-                          style: TextStyle(
-                              fontFamily: "Brb",
-                              fontSize: 13,
-                              color: Color.fromARGB(255, 27, 180, 246)),
+                  child: Form(
+                    key: formKey,
+                    child: Column(children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 30, 0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            "شماره موبایل یا آدرس‌ایمیل به همراه کلمه عبور خود را وارد کنید",
+                            style: TextStyle(
+                                fontFamily: "Brb",
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 27, 180, 246)),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          textAlignVertical: TextAlignVertical.bottom,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          obscureText: false,
                           decoration: InputDecoration(
-                            hintText: "آدرس ایمیل یا شماره موبایل",
+                            labelText: "نام کاربری",
                             prefixIcon: Icon(Icons.supervisor_account_rounded),
-                          )),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          obscureText: passwordVisible,
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          decoration: InputDecoration(
-                              hintText: "کلمه عبور",
-                              prefixIcon: Icon(Icons.key_rounded),
-                              suffixIcon: IconButton(
-                                icon: Icon(passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                              ))),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                      child: TextField(
-                          obscureText: passwordVisible,
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          style: TextStyle(fontFamily: "Brb", fontSize: 13),
-                          decoration: InputDecoration(
-                              hintText: "تکرار کلمه عبور",
-                              prefixIcon:
-                                  Icon(Icons.check_circle_outline_rounded),
-                              suffixIcon: IconButton(
-                                icon: Icon(passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                              ))),
-                    )
-                  ]),
+                          ),
+                          controller: _controller_user,
+                          // validator: (value) {
+                          //   if (value!.isEmpty ||
+                          //       !(RegExp(r'^\d{11}$').hasMatch(value) ||
+                          //           RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          //               .hasMatch(value))) {
+                          //     return "لطفا ایمیل خود را صحیح وارد کنید.";
+                          //   } else {
+                          //     return null;
+                          //   }
+                          // },
+                        ),
+                      ),
+                      check_pass(),
+                    ]),
+                  ),
                 ),
               ),
             ),
             const SizedBox(
-              height: 250,
+              height: 150,
             ),
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const main_page(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = const Offset(1.0, 1.0);
-                        var end = Offset.zero;
-                        var curve = Curves.ease;
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      }));
+                  if (formKey.currentState!.validate()) {
+                    //todo
+                    //temp_username = _controller_user.text;
+
+                    // Future<String> futured = send_user_pass(
+                    //     _controller_user.text + "-" + _controller_pass.text);
+                    // futured.then((value) {
+                    //   //print(value);
+                    // });
+                    send_user_pass(_controller_user.text + "-" + _controller_pass.text);
+                    
+                  
+
+                    //  if(_log == "ok signup"){
+                    //   //save info of user
+                    // Navigator.of(context).push(PageRouteBuilder(
+                    //     pageBuilder: (context, animation, secondaryAnimation) =>
+                    //         const main_page(),
+                    //     transitionsBuilder:
+                    //         (context, animation, secondaryAnimation, child) {
+                    //       var begin = const Offset(1.0, 1.0);
+                    //       var end = Offset.zero;
+                    //       var curve = Curves.ease;
+                    //       var tween = Tween(begin: begin, end: end)
+                    //           .chain(CurveTween(curve: curve));
+                    //       return SlideTransition(
+                    //         position: animation.drive(tween),
+                    //         child: child,
+                    //       );
+                    //     }));
+                    // }
+                  }
                 },
                 child: Column(
                   children: [
@@ -222,6 +220,143 @@ class _signupState extends State<signup> {
           ],
         ),
       ),
+    );
+  }
+
+  // static Future<String> send_user_pass(String message) async {
+  //   String request = "Signup\n" + message + "\u0000";
+  //   print("request");
+  //   await Socket.connect(ip_address, 8000).then((serverSocket) {
+  //     print("connected");
+  //     serverSocket.write(request);
+  //     serverSocket.flush();
+  //     print("write");
+  //     serverSocket.listen((response) {
+  //       print(String.fromCharCodes(response));
+  //       setState(() {
+  //         _log = String.fromCharCodes(response);
+  //       });
+  //       print(_log);
+  //     });
+  //   });
+  // }
+
+  // Future<String> send_user_pass(String message) async {
+  //   String res = "";
+  //   String request = "Signup\n" + message + "\u0000";
+  //   var socket = await Socket.connect(ip_address, 8000);
+  //   socket.write(request);
+  //   socket.flush();
+  //   var subscription = socket.listen((response) {
+  //     res += String.fromCharCodes(response);
+  //   });
+  //   await subscription.asFuture<void>();
+  //   setState(() {
+  //     _log = res;
+  //   });
+  //   return res;
+  // }
+
+   send_user_pass(String message) async {
+    String request = "Signup\n" + message + "\u0000";
+    print("request");
+
+    await Socket.connect(ip_address, 8000).then((serverSocket) {
+      print("connected");
+      serverSocket.write(request);
+      serverSocket.flush();
+      print("write");
+      serverSocket.listen((response) {
+        //print(String.fromCharCodes(response));
+        setState(() {
+          _log += String.fromCharCodes(response) + "\n";
+        });
+      }).onDone(() {
+        print(_log);
+      });
+    });
+   }
+
+}
+
+class check_pass extends StatefulWidget {
+  const check_pass({super.key});
+
+  @override
+  State<check_pass> createState() => _check_passState();
+}
+
+class _check_passState extends State<check_pass> {
+  String? input_password;
+  bool passwordVisible = false;
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            obscureText: passwordVisible,
+            decoration: InputDecoration(
+              labelText: "کلمه عبور",
+              prefixIcon: Icon(Icons.key_rounded),
+              suffixIcon: IconButton(
+                icon: Icon(
+                    passwordVisible ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
+            ),
+            controller: _controller_pass,
+            validator: (value) {
+              if (value!.isEmpty ||
+                  !RegExp(r'^(?!.*01)(?!.*12)(?!.*23)(?!.*34)(?!.*45)(?!.*56)(?!.*67)(?!.*78)(?!.*89)(?=.*[aA].*[aA].*)(?=.*[01])[a-zA-Z0-9]{8,}$')
+                      .hasMatch(value)) {
+                //regex must be checked
+                return "رمز عبور نامعتبر است.";
+              } else {
+                input_password = value;
+                return null;
+              }
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            obscureText: passwordVisible,
+            decoration: InputDecoration(
+              labelText: "تکرار کلمه عبور",
+              prefixIcon: Icon(Icons.check_circle_outline_rounded),
+              suffixIcon: IconButton(
+                icon: Icon(
+                    passwordVisible ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
+            ),
+            validator: (value) {
+              if (input_password != value) {
+                //regex must be checked
+                return "رمز عبور یکسان نیست.";
+              } else {
+                return null;
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,14 +1,130 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields, unused_import, prefer_adjacent_string_concatenation, prefer_interpolation_to_compose_strings
+// ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields, unused_import, prefer_adjacent_string_concatenation, prefer_interpolation_to_compose_strings, unused_element, prefer_const_constructors_in_immutables
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/confirm_page.dart';
 import 'package:flutter_application_1/mainpage.dart';
 import 'package:flutter_application_1/pasenger.dart';
 import 'package:flutter_application_1/safebilit.dart';
 import 'package:flutter_application_1/search_flight.dart';
+import 'package:flutter_application_1/search_flight_return.dart';
+
+final TextEditingController _controller = TextEditingController(text: "");
+String _log = "";
+
+String template2 = "Salam";
 
 void main() {
   runApp(const search_flight());
+}
+
+class day_list extends StatefulWidget {
+  const day_list({super.key});
+
+  @override
+  State<day_list> createState() => _day_listState();
+}
+
+
+class HorizontalListView extends StatelessWidget {
+
+  HorizontalListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[300],
+      height: 50,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 30,
+            color: Colors.grey[300],
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black54,
+              ),
+              onPressed: () {},
+            ),
+          ),
+          Expanded(
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: week_days.length,
+              separatorBuilder: (context, index) => const VerticalDivider(
+                indent: 8,
+                endIndent: 8,
+                thickness: 1,
+                color: Colors.black,
+              ),
+              itemBuilder: (context, index) => SizedBox(
+                width: 80,
+                child: Center(
+                  child: TextButton(
+                    onPressed: () { 
+                      print(week_days[index]);
+                      //go to that page
+                     },
+                    child: Text(
+                      week_days[index],
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black54,
+            ),
+            onPressed: () {
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class _day_listState extends State<day_list> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: week_days.length,
+        itemBuilder: (context, index) {
+          String day = week_days[index];
+          return GestureDetector(
+            onTap: () {
+              // Handle day selection here
+              print("Selected day: $day");
+            },
+            child: Container(
+              padding: EdgeInsets.all(8),
+              margin: EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                day,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class search_flight extends StatefulWidget {
@@ -67,7 +183,6 @@ class _search_sortState extends State<search_sort> {
                       color: Colors.blue[900],
                       fontWeight: FontWeight.w100),
                 ),
-
               ],
             ),
           ),
@@ -75,6 +190,8 @@ class _search_sortState extends State<search_sort> {
           onChanged: (value) {
             setState(() {
               _selectedGender = value;
+              //todo
+              //refresh whole
             });
           },
           icon: const SizedBox.shrink(),
@@ -96,11 +213,19 @@ class _search_sortState extends State<search_sort> {
 
 Widget search_page(BuildContext context) {
   return Directionality(
-      textDirection: TextDirection.rtl, child: status_icons(context));
+      textDirection: TextDirection.rtl, child: status_icon());
+}
+class status_icon extends StatefulWidget {
+  const status_icon({super.key});
+
+  @override
+  State<status_icon> createState() => _status_iconState();
 }
 
-Widget status_icons(BuildContext context) {
-  return Scaffold(
+class _status_iconState extends State<status_icon> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
     resizeToAvoidBottomInset: false,
     appBar: AppBar(
       toolbarHeight: 80,
@@ -113,6 +238,9 @@ Widget status_icons(BuildContext context) {
             children: [
               IconButton(
                 onPressed: () {
+                  setState(() {
+                    BuyTicket.clear_all();
+                  });
                   Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           const safebilit(),
@@ -146,6 +274,9 @@ Widget status_icons(BuildContext context) {
               Expanded(child: Container()),
               IconButton(
                   onPressed: () {
+                    setState(() {
+                    BuyTicket.clear_all();
+                    });
                     Navigator.of(context).push(PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) =>
                             const safebilit(),
@@ -240,55 +371,99 @@ Widget status_icons(BuildContext context) {
     body: whole_search(context),
     backgroundColor: Color.fromARGB(255, 236, 242, 242),
   );
+
+  }
+}
+
+
+
+class setFlight extends StatefulWidget {
+  const setFlight({super.key});
+
+  @override
+  State<setFlight> createState() => _setFlightState();
+}
+
+class _setFlightState extends State<setFlight> {
+  void setFlight_var(String s) {
+    setState(() {
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
 
 Widget whole_search(BuildContext context) {
-  List<String> week_days = [
-    "شنبه",
-    "یکشنبه",
-    "دوشنبه",
-    "سه شنبه",
-    "چهارشنبه",
-    "پنج شنبه",
-    "جمعه"
-  ];
-  var has_return_flight = true;
-  List<String> flight_capacity = ["2", "5", "7"];
-  List<String> flight_price = ["۱٫۲۵۰٫۰۰۰", "۹۷۰٫۰۰۰", "۱٫۴۰۰٫۰۰۰"];
-  List<String> airline_name = ["ماهان", "زاگرس", "ایران ایر"];
-  List<String> flight_class_type = ["اکونومی", "اکونومی", "بیزینس"];
-  List<String> departure_time = ["۱۲:۳۰", "۱۳:۳۵", "۸:۵۰"];
-  List<String> arrival_time = ["۲:۲۰", "۳:۱۵", "۱۰"];
-  List<String> airline_logo = [
-    "assets/mahan.jpg",
-    "assets/zagros.jpg",
-    "assets/iranair.jpg"
-  ];
-  String departure_city = "تهران";
-  String arrival_city = "کیش";
+  send_ticket_selected(String message) async {
+    String request = message + "\u0000";
+    print("request");
+
+    await Socket.connect(ip_address, 8000).then((serverSocket) {
+      print("connected");
+      serverSocket.write(request);
+      serverSocket.flush();
+      print("write");
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        // setState(() {
+        //   _log += String.fromCharCodes(response) + "\n";
+        // });
+      });
+    });
+  }
 
   List<Widget> flight_info = [];
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < flight_price.length; i++) {
     flight_info.add(Padding(
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
+          print("it has return flight");
+          print(i);
+          //one one them will be used
+          // send_ticket_selected(departure_city[i] + "-" + arrival_city[i] + "-" + departure_date[i] + "-" + departure_time[i] + "-" + arrival_time[i] + "-" + airline_name[i]);
+          // send_ticket_selected(i.toString());
+
+          //todo
           //save flight details
-          Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const pasenger(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                var begin = const Offset(1.0, 1.0);
-                var end = Offset.zero;
-                var curve = Curves.ease;
-                var tween = Tween(begin: begin, end: end)
-                    .chain(CurveTween(curve: curve));
-                return SlideTransition(
-                  position: animation.drive(tween),
-                  child: child,
-                );
-              }));
+          //save i index
+          if (main_stuff.has_return_flight == true) {
+            Navigator.of(context).push(PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    search_flight_return(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var begin = const Offset(1.0, 1.0);
+                  var end = Offset.zero;
+                  var curve = Curves.ease;
+                  var tween = Tween(begin: begin, end: end)
+                      .chain(CurveTween(curve: curve));
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                }));
+          } else {
+            Navigator.of(context).push(PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    pasenger(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var begin = const Offset(1.0, 1.0);
+                  var end = Offset.zero;
+                  var curve = Curves.ease;
+                  var tween = Tween(begin: begin, end: end)
+                      .chain(CurveTween(curve: curve));
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                }));
+          }
         },
         child: Container(
           width: double.infinity,
@@ -335,7 +510,7 @@ Widget whole_search(BuildContext context) {
                               child: Column(
                                 children: [
                                   Text(
-                                    departure_city,
+                                    departure_city[index],
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -364,7 +539,7 @@ Widget whole_search(BuildContext context) {
                               child: Column(
                                 children: [
                                   Text(
-                                    arrival_city,
+                                    arrival_city[index],
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -523,7 +698,8 @@ Widget whole_search(BuildContext context) {
     child: Column(
       children: [
         //add listview
-
+        HorizontalListView(),
+        
         Padding(
           //
           padding: const EdgeInsets.all(10.0),

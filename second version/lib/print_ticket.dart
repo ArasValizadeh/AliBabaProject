@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/mainpage.dart';
 
 void main() {
@@ -28,11 +29,19 @@ class _print_ticketState extends State<print_ticket> {
 
 Widget page(BuildContext context) {
   return Directionality(
-      textDirection: TextDirection.rtl, child: status_icons(context));
+      textDirection: TextDirection.rtl, child: setstatus());
+}
+class setstatus extends StatefulWidget {
+  const setstatus({super.key});
+
+  @override
+  State<setstatus> createState() => _setstatusState();
 }
 
-Widget status_icons(BuildContext context) {
-  return Scaffold(
+class _setstatusState extends State<setstatus> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
     resizeToAvoidBottomInset: false,
     appBar: AppBar(
       toolbarHeight: 80,
@@ -45,6 +54,10 @@ Widget status_icons(BuildContext context) {
             children: [
               IconButton(
                 onPressed: () {
+                  setState(() {
+                    BuyTicket.clear_all();
+                  });
+                  
                   Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           const main_page(),
@@ -136,31 +149,12 @@ Widget status_icons(BuildContext context) {
     body: print_flight(context),
     backgroundColor: Color.fromARGB(255, 236, 242, 242),
   );
+
+  }
 }
 
 Widget print_flight(BuildContext context) {
-  String departure_city = "تهران";
-  String arrival_city = "کیش";
-  String airline_name = "ماهان";
-  String return_airline_name = "زاگرس";
-  String date_and_time_departure = "دوشنبه ۲۶ تیر - ۱۱:۴۵";
-  String return_date_and_time_departure = "شنبه ۳۱ تیر - ۱۶:۱۵";
-  String flight_numberID = "W5 1080";
-  String return_flight_numberID = "W5 1081";
-  String flight_class_type = "اکونومی";
-  String return_flight_class_type = "بیزینس";
-  String baggage_allowance = " ۲۵ کیلوگرم";
-  String return_baggage_allowance = " ۳۰ کیلوگرم";
-  String special_request = "ندارد";
-  String return_special_request = "ندارد";
-  String refundability = "-";
-  String return_refundability = "-";
-  bool has_return_flight = true;
-  String date_departure = "دوشنبه ۲۶ تیر";
-  String return_date = "شنبه ۳۱ تیر";
-  String airline_logo = "assets/mahan.jpg";
-  String return_airline_logo = "assets/zagros.jpg";
-  String reservation_number = "۱۲۶۵۸";
+  
 
   return Scaffold(
     body: SingleChildScrollView(
@@ -197,7 +191,7 @@ Widget print_flight(BuildContext context) {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("شماره پیگیری : " + reservation_number,
+                              Text("شماره پیگیری : " + reservation_number[index],
                               style: TextStyle(
                                 fontFamily: "Brb",
                                 fontSize: 25,
@@ -271,7 +265,7 @@ Widget print_flight(BuildContext context) {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  date_departure,
+                                  departure_date[index],
                                   style: TextStyle(
                                       fontFamily: "Brb",
                                       color: Colors.black,
@@ -296,10 +290,10 @@ Widget print_flight(BuildContext context) {
                                     SizedBox(
                                       width: 50,
                                       height: 50,
-                                      child: Image.asset(airline_logo),
+                                      child: Image.asset(airline_logo[index]),
                                     ),
                                     Text(
-                                      airline_name,
+                                      airline_name[index],
                                       style: TextStyle(
                                           fontFamily: "Brb",
                                           fontSize: 15,
@@ -318,7 +312,7 @@ Widget print_flight(BuildContext context) {
                                       Row(
                                         children: [
                                           Text(
-                                            departure_city,
+                                            departure_city[index],
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
@@ -329,7 +323,7 @@ Widget print_flight(BuildContext context) {
                                             textDirection: TextDirection.ltr,
                                           ),
                                           Text(
-                                            arrival_city,
+                                            arrival_city[index],
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
@@ -340,7 +334,7 @@ Widget print_flight(BuildContext context) {
                                       Padding(
                                         padding: const EdgeInsets.only(top: 15),
                                         child: Text(
-                                          date_and_time_departure,
+                                          departure_time[index],
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
@@ -471,7 +465,7 @@ Widget print_flight(BuildContext context) {
                                         Row(
                                           children: [
                                             Text(
-                                              arrival_city,
+                                              arrival_city[index],
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
@@ -482,7 +476,7 @@ Widget print_flight(BuildContext context) {
                                               textDirection: TextDirection.ltr,
                                             ),
                                             Text(
-                                              departure_city,
+                                              departure_city[index],
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
@@ -494,7 +488,7 @@ Widget print_flight(BuildContext context) {
                                           padding:
                                               const EdgeInsets.only(top: 15),
                                           child: Text(
-                                            return_date_and_time_departure,
+                                            arrival_time[index],
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,

@@ -1,8 +1,32 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields
+// ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_local_variable, avoid_unnecessary_containers, avoid_print, prefer_typing_uninitialized_variables, deprecated_member_use, no_leading_underscores_for_local_identifiers, overridden_fields, unused_element, prefer_interpolation_to_compose_strings
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
 import 'package:flutter_application_1/confirm_page.dart';
 import 'package:flutter_application_1/search_flight.dart';
+
+List<TextEditingController> _controller_name = List.generate(
+  BuyTicket.number_of_passenger_adult + BuyTicket.number_of_passenger_child,
+  (index) => TextEditingController(text: ""),
+);
+List<TextEditingController> _controller_lastname = List.generate(
+  BuyTicket.number_of_passenger_adult + BuyTicket.number_of_passenger_child,
+  (index) => TextEditingController(text: ""),
+);
+List<TextEditingController> _controller_birthday = List.generate(
+  BuyTicket.number_of_passenger_adult + BuyTicket.number_of_passenger_child,
+  (index) => TextEditingController(text: ""),
+);
+List<TextEditingController> _controller_id_number = List.generate(
+  BuyTicket.number_of_passenger_adult + BuyTicket.number_of_passenger_child,
+  (index) => TextEditingController(text: ""),
+);
+TextEditingController _controller_email = TextEditingController(text: "");
+TextEditingController _controller_phone = TextEditingController(text: "");
+
+String _log = "";
 
 void main() {
   runApp(const pasenger());
@@ -142,312 +166,692 @@ Widget status_icons(BuildContext context) {
         ],
       ),
     ),
-    body: whole_page(context),
+    body: whole_page(),
     backgroundColor: Color.fromARGB(255, 236, 242, 242),
   );
 }
 
-Widget whole_page(BuildContext context) {
-  String departure_city = "تهران";
-  String arrival_city = "کیش";
-  String airline_name = "ماهان";
-  String return_airline_name = "زاگرس";
-  String date_and_time_departure = "دوشنبه ۲۶ تیر - ۱۱:۴۵";
-  String return_date_and_time_departure = "شنبه ۳۱ تیر - ۱۶:۱۵";
-  String flight_numberID = "W5 1080";
-  String return_flight_numberID = "W5 1081";
-  String flight_class_type = "اکونومی";
-  String return_flight_class_type = "بیزینس";
-  String baggage_allowance = " ۲۵ کیلوگرم";
-  String return_baggage_allowance = " ۳۰ کیلوگرم";
-  String special_request = "ندارد";
-  String return_special_request = "ندارد";
-  String refundability = "-";
-  String return_refundability = "-";
-  bool has_return_flight = true;
+class whole_page extends StatefulWidget {
+  const whole_page({super.key});
 
-  int number_of_passenger = 2;
-  String passenger_name = "سامان رستم بیگی";
-  String passenger_gender = "مرد";
-  String passenger_nationalID = "۰۴۴۱۱۶۲۷۳۵";
-  String passenger_birthday = "۱۳۸۲/۰۹/۲۲";
-  String passenger_nationality = "ایران";
-  String passenger_email = "amirsamanrbuni@gmail.com";
-  String passenger_phone = "۰۹۱۲۴۲۲۴۲۷۸";
-  String ticket_price = "۳۵,۰۷۲,۰۰۰";
+  @override
+  State<whole_page> createState() => _whole_pageState();
+}
 
-  String date_departure = "دوشنبه ۲۶ تیر";
-  String return_date = "شنبه ۳۱ تیر";
-  String airline_logo = "assets/mahan.jpg";
-  String return_airline_logo = "assets/zagros.jpg";
-
-  bool open_pasenger_list = false;
-
-  String? _selectedGender;
-
+class _whole_pageState extends State<whole_page> {
   List<Widget> pasenger_getinfo = [];
-  for (int i = 0; i < number_of_passenger; i++) {
-    pasenger_getinfo.add(
-
-            Container(
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                      color: Color.fromARGB(255, 125, 122, 122),
-                      width: 2,
-                    )),
-                    child: SizedBox(
-            
-                        child: Container(  //pasenger
-                          child: ExpansionTile(
-                              title: Row(children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "نام و نام خانوادگی",
-                                        style: TextStyle(
-                                            fontFamily: "Brb",
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          "شماره ملی / پاسپورت",
-                                          style: TextStyle(
-                                              fontFamily: "Brb",
-                                              fontSize: 15,
-                                              color: Color.fromARGB(255, 87, 82, 82)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(child: Container()),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1,
-                                            //style: BorderStyle.solid
-                                          )),
-                                      child: SizedBox(
-                                        width: 60,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "بزرگسال",
-                                            style: TextStyle(
-                                              fontFamily: "Brb",
-                                              fontSize: 15,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                              children: [
-                                pasenger_infoget(context),
-                              ]),
-                        ),               
-            
-                    ),
-                  )),
-            ),
-            
-    );
+  @override
+  void initState() {
+    super.initState();
+    pasenger_getinfo = _passenger_getinfo_maker();
   }
 
-  return Scaffold(
-    body: SingleChildScrollView(
-      child: Container(
-        color: Color.fromARGB(255, 236, 242, 242),
-        child: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                      color: Color.fromARGB(255, 125, 122, 122),
-                      width: 2,
-                    )),
-                    child: SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(children: [
-                          //first line
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue[100],
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: SizedBox(
-                                      width: 80,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Icon(
-                                                Icons.check_circle_rounded,
-                                                size: 20,
-                                                color: Colors.blue[900],
-                                              ),
-                                            ),
-                                            Text(
-                                              "بلیط رفت",
-                                              style: TextStyle(
-                                                  fontFamily: "Brb",
-                                                  fontSize: 15,
-                                                  color: Colors.blue[900],
-                                                  fontWeight: FontWeight.w100),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  date_departure,
-                                  style: TextStyle(
-                                      fontFamily: "Brb",
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              MaterialButton(
-                                onPressed: () {
-                                  //return to last page
-                                },
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: SizedBox(
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "تغییر بلیط",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.change_circle_outlined,
-                                          color: Colors.blue,
-                                          size: 20,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          //second line
+  List<Widget> _passenger_getinfo_maker() {
+    for (int i = 0; i < BuyTicket.number_of_passenger_adult; i++) {
+      if (i == 0) {
+        pasenger_getinfo.add(Container(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Color.fromARGB(255, 125, 122, 122),
+                  width: 2,
+                )),
+                child: SizedBox(
+                  child: Container(
+                    //pasenger
+                    child: ExpansionTile(
+                        title: Row(children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            child: Column(
                               children: [
-                                //airline axs + name
-                                Column(
-                                  children: [
-                                    SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: Image.asset(airline_logo),
-                                    ),
-                                    Text(
-                                      airline_name,
-                                      style: TextStyle(
-                                          fontFamily: "Brb",
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    )
-                                  ],
+                                Text(
+                                  "نام و نام خانوادگی",
+                                  style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
-
                                 Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            departure_city,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          Icon(
-                                            Icons.arrow_back_rounded,
-                                            textDirection: TextDirection.ltr,
-                                          ),
-                                          Text(
-                                            arrival_city,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: Text(
-                                          date_and_time_departure,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    "شماره ملی / پاسپورت",
+                                    style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Color.fromARGB(255, 87, 82, 82)),
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          Expanded(child: Container()),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1,
+                                      //style: BorderStyle.solid
+                                    )),
+                                child: SizedBox(
+                                  width: 60,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "بزرگسال",
+                                      style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ]),
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_name[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام خانوادگی",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_lastname[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextFormField(
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        labelText: "کد ملی",
+                                        labelStyle: TextStyle(
+                                            fontSize: 20, fontFamily: "Brb"),
+                                      ),
+                                      controller: _controller_id_number[i],
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return null;
+                                        }
+                                        if (value.isEmpty ||
+                                            !RegExp(r'^\d{10}$')
+                                                .hasMatch(value)) {
+                                          //regex must be checked
+                                          return "کد ملی نامعتبر است.";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "تاریخ تولد",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_birthday[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "ایمیل",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_email,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "شماره موبایل",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_phone,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              //genderBox(),
+                            ],
+                          )
+                        ]),
+                  ),
+                ),
+              )),
+        ));
+      } else {
+        pasenger_getinfo.add(
+          Container(
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    color: Color.fromARGB(255, 125, 122, 122),
+                    width: 2,
+                  )),
+                  child: SizedBox(
+                    child: Container(
+                      //pasenger
+                      child: ExpansionTile(
+                        title: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "نام و نام خانوادگی",
+                                  style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    "شماره ملی / پاسپورت",
+                                    style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Color.fromARGB(255, 87, 82, 82)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1,
+                                      //style: BorderStyle.solid
+                                    )),
+                                child: SizedBox(
+                                  width: 60,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "بزرگسال",
+                                      style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_name[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام خانوادگی",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_lastname[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "کد ملی",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_id_number[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "تاریخ تولد",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_birthday[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              //genderBox(),
+                            ],
+                          )
+                        ],
                       ),
-                    ))),
-            Visibility(
-              visible: has_return_flight,
-              child: Padding(
+                    ),
+                  ),
+                )),
+          ),
+        );
+      }
+    }
+    for (int i = BuyTicket.number_of_passenger_adult;
+        i <
+            BuyTicket.number_of_passenger_child +
+                BuyTicket.number_of_passenger_adult;
+        i++) {
+      pasenger_getinfo.add(
+        Container(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Color.fromARGB(255, 125, 122, 122),
+                  width: 2,
+                )),
+                child: SizedBox(
+                  child: Container(
+                    //pasenger
+                    child: ExpansionTile(
+                        title: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "نام و نام خانوادگی",
+                                  style: TextStyle(
+                                      fontFamily: "Brb",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    "شماره ملی / پاسپورت",
+                                    style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Color.fromARGB(255, 87, 82, 82)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1,
+                                      //style: BorderStyle.solid
+                                    )),
+                                child: SizedBox(
+                                  width: 60,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "خردسال",
+                                      style: TextStyle(
+                                        fontFamily: "Brb",
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_name[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "نام خانوادگی",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_lastname[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                            fontFamily: "Brb", fontSize: 20),
+                                        decoration: InputDecoration(
+                                            hintText: "کد ملی",
+                                            hintStyle: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: "Brb")),
+                                        controller: _controller_id_number[i]),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 91, 84, 84),
+                                        width: 1,
+                                      )),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: TextField(
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: "Brb", fontSize: 20),
+                                      decoration: InputDecoration(
+                                          hintText: "تاریخ تولد",
+                                          hintStyle: TextStyle(
+                                              fontSize: 20, fontFamily: "Brb")),
+                                      controller: _controller_birthday[i],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              //genderBox(),
+                            ],
+                          )
+                        ]),
+                  ),
+                ),
+              )),
+        ),
+      );
+    }
+    return pasenger_getinfo;
+  }
+
+  send_passenger_getter_info(String message) async {
+    String request = message + "\u0000";
+    print("request");
+
+    await Socket.connect(ip_address, 8000).then((serverSocket) {
+      print("connected");
+      serverSocket.write(request);
+      serverSocket.flush();
+      print("write");
+      serverSocket.listen((response) {
+        print(String.fromCharCodes(response));
+        // setState(() {
+        //   _log += String.fromCharCodes(response) + "\n";
+        // });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color.fromARGB(255, 236, 242, 242),
+          child: Column(
+            children: [
+              Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                       decoration: BoxDecoration(
@@ -472,14 +876,9 @@ Widget whole_page(BuildContext context) {
                                         color: Colors.blue[100],
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
-                                        // border: Border.all(
-                                        //   color:Colors.black,
-                                        //   width: 1,
-                                        //   //style: BorderStyle.solid
-                                        //   )
                                       ),
                                       child: SizedBox(
-                                        width: 100,
+                                        width: 80,
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Row(
@@ -494,7 +893,7 @@ Widget whole_page(BuildContext context) {
                                                 ),
                                               ),
                                               Text(
-                                                "بلیط برگشت",
+                                                "بلیط رفت",
                                                 style: TextStyle(
                                                     fontFamily: "Brb",
                                                     fontSize: 15,
@@ -512,7 +911,7 @@ Widget whole_page(BuildContext context) {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    return_date,
+                                    departure_date[index],
                                     style: TextStyle(
                                         fontFamily: "Brb",
                                         color: Colors.black,
@@ -562,10 +961,10 @@ Widget whole_page(BuildContext context) {
                                       SizedBox(
                                         width: 50,
                                         height: 50,
-                                        child: Image.asset(return_airline_logo),
+                                        child: Image.asset(airline_logo[index]),
                                       ),
                                       Text(
-                                        return_airline_name,
+                                        airline_name[index],
                                         style: TextStyle(
                                             fontFamily: "Brb",
                                             fontSize: 15,
@@ -584,7 +983,7 @@ Widget whole_page(BuildContext context) {
                                         Row(
                                           children: [
                                             Text(
-                                              arrival_city,
+                                              departure_city[index],
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
@@ -595,7 +994,7 @@ Widget whole_page(BuildContext context) {
                                               textDirection: TextDirection.ltr,
                                             ),
                                             Text(
-                                              departure_city,
+                                              arrival_city[index],
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
@@ -607,7 +1006,7 @@ Widget whole_page(BuildContext context) {
                                           padding:
                                               const EdgeInsets.only(top: 15),
                                           child: Text(
-                                            return_date_and_time_departure,
+                                            departure_time[index],
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
@@ -623,154 +1022,361 @@ Widget whole_page(BuildContext context) {
                           ]),
                         ),
                       ))),
-            ),
-            
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.people,
-                    size: 30,
-                    color: Colors.black,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "مشخصات مسافران",
-                      style: TextStyle(
-                        fontFamily: "Brb",
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            Column(
-              children: pasenger_getinfo
-            ),
-
-            SizedBox(
-              height: 50,
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 150,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const confirm_page(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = const Offset(1.0, 1.0);
-                        var end = Offset.zero;
-                        var curve = Curves.ease;
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      }));
-                },
-                style: ElevatedButton.styleFrom(
-                  primary:
-                      Color.fromARGB(255, 236, 242, 242), // Background color
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.warning_amber_outlined,
-                                size: 15,
-                                color: Colors.black,
+              Visibility(
+                visible: has_return_flight,
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                          color: Color.fromARGB(255, 125, 122, 122),
+                          width: 2,
+                        )),
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(children: [
+                              //first line
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue[100],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          // border: Border.all(
+                                          //   color:Colors.black,
+                                          //   width: 1,
+                                          //   //style: BorderStyle.solid
+                                          //   )
+                                        ),
+                                        child: SizedBox(
+                                          width: 100,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Icon(
+                                                    Icons.check_circle_rounded,
+                                                    size: 20,
+                                                    color: Colors.blue[900],
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "بلیط برگشت",
+                                                  style: TextStyle(
+                                                      fontFamily: "Brb",
+                                                      fontSize: 15,
+                                                      color: Colors.blue[900],
+                                                      fontWeight:
+                                                          FontWeight.w100),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      return_date,
+                                      style: TextStyle(
+                                          fontFamily: "Brb",
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () {
+                                      //return to last page
+                                    },
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: SizedBox(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "تغییر بلیط",
+                                              style: TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.change_circle_outlined,
+                                              color: Colors.blue,
+                                              size: 20,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              //second line
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "با ادامه قوانین سایت و قوانین پرواز موافقت کرده اید.",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Brb",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    //airline axs + name
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child:
+                                              Image.asset(return_airline_logo),
+                                        ),
+                                        Text(
+                                          return_airline_name,
+                                          style: TextStyle(
+                                              fontFamily: "Brb",
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                arrival_city[index],
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.arrow_back_rounded,
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              ),
+                                              Text(
+                                                departure_city[index],
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            child: Text(
+                                              arrival_time[index],
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ]),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "مجموع قیمت",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: "Brb",
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Expanded(child: Container()),
-                              Text(
-                                ticket_price,
-                                style: TextStyle(
-                                    color: Colors.blue[800],
-                                    fontFamily: "Brb",
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text("ریال",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 50, 43, 43),
-                                      fontSize: 15,
-                                      fontFamily: "Brb",
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                          Container(
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: SizedBox(
-                                height: 40,
-                                width: double.infinity,
-                                child: Align(
-                                  alignment: Alignment.center,
+                        ))),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.people,
+                      size: 30,
+                      color: Colors.black,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        "مشخصات مسافران",
+                        style: TextStyle(
+                          fontFamily: "Brb",
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Column(children: pasenger_getinfo),
+              has_return_flight
+                  ? SizedBox(
+                      height: 50,
+                    )
+                  : SizedBox(
+                      height: 140,
+                    ),
+              SizedBox(
+                width: double.infinity,
+                height: 150,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      BuyTicket.passenger_email = _controller_email.text;
+                      BuyTicket.passenger_phone = _controller_phone.text;
+                      List<List<TextEditingController>> controllers = [
+                        _controller_name,
+                        _controller_lastname,
+                        _controller_id_number,
+                        _controller_birthday,
+                      ];
+                      for (int i = 0; i < _controller_name.length; i++) {
+                        List<String> passengerDetails = [];
+                        passengerDetails.add(_controller_name[i].text);
+                        passengerDetails.add(_controller_lastname[i].text);
+                        passengerDetails.add(_controller_id_number[i].text);
+                        passengerDetails.add(_controller_birthday[i].text);
+                        
+                        BuyTicket.passenger_list.add(passengerDetails);
+                      }
+                    });
+
+                    //todo
+                    //send_passenger_getter_info(_controller_name.text + "-" + _controller_lastname.text + "-" + _controller_id_number.text );
+                    //we only need to save information and it is not neccesery to be sent to email
+
+                    // if (formkey_passenger_getinfo.currentState!.validate()) {
+                    Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const confirm_page(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1.0, 1.0);
+                          var end = Offset.zero;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        }));
+                    //}
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary:
+                        Color.fromARGB(255, 236, 242, 242), // Background color
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.warning_amber_outlined,
+                                  size: 15,
+                                  color: Colors.black,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "تایید و ادامه پرداخت",
+                                    "با ادامه قوانین سایت و قوانین پرواز موافقت کرده اید.",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: "Brb",
-                                        fontSize: 20,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "مجموع قیمت",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Brb",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(child: Container()),
+                                Text(
+                                  ticket_price,
+                                  style: TextStyle(
+                                      color: Colors.blue[800],
+                                      fontFamily: "Brb",
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text("ریال",
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 50, 43, 43),
+                                        fontSize: 15,
+                                        fontFamily: "Brb",
+                                        fontWeight: FontWeight.bold))
+                              ],
+                            ),
+                            Container(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: SizedBox(
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "تایید و ادامه پرداخت",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "Brb",
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class genderBox extends StatefulWidget {
@@ -845,80 +1451,6 @@ class _genderBoxState extends State<genderBox> {
       ],
     );
   }
-}
-
-pasenger_infoget(BuildContext context) {
-  var _selectedGender;
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "نام",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "نام خانوادگی",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: Color.fromARGB(255, 91, 84, 84),
-                width: 1,
-              )),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-                textAlign: TextAlign.right,
-                style: TextStyle(fontFamily: "Brb", fontSize: 20),
-                decoration: InputDecoration(
-                    hintText: "کد ملی",
-                    hintStyle: TextStyle(fontSize: 20, fontFamily: "Brb"))),
-          ),
-        ),
-      ),
-
-      genderBox(),
-
-      //birthday
-    ],
-  );
 }
 
 class CustomDropdownMenuItem<T> extends DropdownMenuItem<T> {

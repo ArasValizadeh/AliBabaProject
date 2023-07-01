@@ -1,10 +1,16 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_local_variable, empty_statements, unnecessary_new, avoid_web_libraries_in_flutter, unused_import
+// ignore_for_file: camel_case_types, prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_local_variable, empty_statements, unnecessary_new, avoid_web_libraries_in_flutter, unused_import, dead_code, prefer_interpolation_to_compose_strings, avoid_print
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/GlobalVariable.dart';
+import 'package:flutter_application_1/account_page.dart';
 import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/my_trip.dart';
 import 'package:flutter_application_1/pasenger.dart';
 import 'package:flutter_application_1/safebilit.dart';
 import 'package:flutter_application_1/search_flight.dart';
+import 'package:flutter_application_1/tarakonesh.dart';
 
 void main() {
   runApp(const main_page());
@@ -73,12 +79,12 @@ Widget main_items(BuildContext context) {
                   child: GridView.count(
                     crossAxisCount: 3,
                     children: [
-                      buildItem(context,"هتل", widthbox: 50, heightbox: 20),
-                      buildItem(context,"قطار", widthbox: 50, heightbox: 20),
-                      buildItem(context,"پرواز", widthbox: 50, heightbox: 20),
-                      buildItem(context,"اتوبوس", widthbox: 50, heightbox: 20),
-                      buildItem(context,"ویلا", widthbox: 50, heightbox: 20),
-                      buildItem(context,"تور", widthbox: 50, heightbox: 20),
+                      buildItem(context, "هتل", widthbox: 50, heightbox: 20),
+                      buildItem(context, "قطار", widthbox: 50, heightbox: 20),
+                      buildItem(context, "پرواز", widthbox: 50, heightbox: 20),
+                      buildItem(context, "اتوبوس", widthbox: 50, heightbox: 20),
+                      buildItem(context, "ویلا", widthbox: 50, heightbox: 20),
+                      buildItem(context, "تور", widthbox: 50, heightbox: 20),
                     ],
                   ),
                 ),
@@ -92,42 +98,194 @@ Widget main_items(BuildContext context) {
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Align(
           alignment: Alignment.bottomCenter,
-          child:
-              SizedBox(width: 400, height: 120, child: ButtonBanner(context)),
+          child: SizedBox(width: 400, height: 120, child: buttonbanner()),
         ),
       )
     ],
   );
 }
 
-Widget ButtonBanner(BuildContext context) {
-  return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          backgroundColor: Colors.orangeAccent,
-          bottomNavigationBar: BottomAppBar(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      
-                    },
-                    child: SizedBox(
-                      width: 100,
+class buttonbanner extends StatefulWidget {
+  const buttonbanner({super.key});
+
+  @override
+  State<buttonbanner> createState() => _buttonbannerState();
+}
+
+class _buttonbannerState extends State<buttonbanner> {
+  static Future<String> get_tarakonesh(String message) async {
+    String res = "";
+    String request =  message + "\u0000";
+    var socket = await Socket.connect(ip_address, 8000);
+    socket.write(request);
+    socket.flush();
+    var subscription = socket.listen((response) {
+      res += String.fromCharCodes(response);
+    });
+    await subscription.asFuture<void>();
+    return res;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+            backgroundColor: Colors.orangeAccent,
+            bottomNavigationBar: BottomAppBar(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: SizedBox(
+                        width: 100,
+                        height: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 0,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).push(PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        (main_stuff.isLogin
+                                            ? account_page()
+                                            : login()),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = const Offset(0.0, 0.0);
+                                  var end = Offset.zero;
+                                  var curve = Curves.ease;
+                                  var tween = Tween(begin: begin, end: end)
+                                      .chain(CurveTween(curve: curve));
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: child,
+                                  );
+                                }));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.account_circle_outlined,
+                                size: 30,
+                                color: Colors.black,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  "حساب کاربری",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: "Brb",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
                       height: double.infinity,
+                      width: 100,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           elevation: 0,
                         ),
                         onPressed: () {
+                          if (main_stuff.isLogin) {
+                            //todo
+                            setState(() {
+                              Future<String> future_mytrip =
+                                  get_tarakonesh("MyFlights\n" +main_stuff.login_username);
+                              future_mytrip.then((value) {
+                                print(value);
+                                List<String> tempList = value.split(',');
+                                main_stuff.my_trip_list.clear();
+                                for (String item in tempList) {
+                                  List<String> splitItems = item.split('-');   
+                                  main_stuff.my_trip_list.add(splitItems);
+                                }
+                                print(main_stuff.my_trip_list);
+                              });
+                            });
+                          }
+                           Navigator.of(context).push(PageRouteBuilder(
+                              pageBuilder: (context, animation,
+                                      secondaryAnimation) =>
+                                  (main_stuff.isLogin ? my_trip() : login()),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = const Offset(0.0, 0.0);
+                                var end = Offset.zero;
+                                var curve = Curves.ease;
+                                var tween = Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: curve));
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              }));
+
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.backpack_outlined,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                "سفرهای من",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontFamily: "Brb",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: double.infinity,
+                      width: 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          if (main_stuff.isLogin) {
+                            setState(() {
+                              Future<String> future_tarakonesh =
+                                  get_tarakonesh("MyTransactions\n" + main_stuff.login_username);
+                              future_tarakonesh.then((value) {
+                                print(value);
+                                main_stuff.login_user_tarakonesh =
+                                    value.split(',');
+                              });
+                            });
+                          }
                           Navigator.of(context).push(PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      const login(),
+                              pageBuilder: (context, animation,
+                                      secondaryAnimation) =>
+                                  (main_stuff.isLogin ? tarakonesh() : login()),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 var begin = const Offset(0.0, 0.0);
@@ -145,14 +303,64 @@ Widget ButtonBanner(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.account_circle_outlined,
+                              Icons.backpack_outlined,
                               size: 30,
                               color: Colors.black,
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.only(bottom: 8, top: 8),
                               child: Text(
-                                "حساب کاربری",
+                                "تراکنش ها",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontFamily: "Brb",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      const login(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = const Offset(1.0, 1.0);
+                                var end = Offset.zero;
+                                var curve = Curves.ease;
+                                var tween = Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: curve));
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              }));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.house_sharp,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "خانه",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Brb",
@@ -160,152 +368,19 @@ Widget ButtonBanner(BuildContext context) {
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: double.infinity,
-                    width: 100,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 0,
-                      ),
-                      onPressed: () {},
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.backpack_outlined,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              "سفرهای من",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 19,
-                                fontFamily: "Brb",
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 90,
-                    height: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 0,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const login(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              var begin = const Offset(1.0, 1.0);
-                              var end = Offset.zero;
-                              var curve = Curves.ease;
-                              var tween = Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: curve));
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            }));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.published_with_changes_rounded,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "پلاس",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Brb",
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 0,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const login(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              var begin = const Offset(1.0, 1.0);
-                              var end = Offset.zero;
-                              var curve = Curves.ease;
-                              var tween = Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: curve));
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            }));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.house_sharp,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "خانه",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Brb",
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          )));
+            )));
+  }
 }
 
-Widget buildItem(BuildContext context,String transportaion,
+Widget buildItem(BuildContext context, String transportaion,
     {required double widthbox, required double heightbox}) {
   IconData iconData;
   if (transportaion == "قطار") {
@@ -334,24 +409,25 @@ Widget buildItem(BuildContext context,String transportaion,
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(225, 224, 224, 224),
           ),
-          onPressed: transportaion == "پرواز" ?() {
-            
-            Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const safebilit(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  var begin = const Offset(1.0, 1.0);
-                  var end = Offset.zero;
-                  var curve = Curves.ease;
-                  var tween = Tween(begin: begin, end: end)
-                      .chain(CurveTween(curve: curve));
-                  return SlideTransition(
-                    position: animation.drive(tween),
-                    child: child,
-                  );
-                }));
-          } : null,
+          onPressed: transportaion == "پرواز"
+              ? () {
+                  Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const safebilit(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = const Offset(1.0, 1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      }));
+                }
+              : null,
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Center(
               child: Text(
