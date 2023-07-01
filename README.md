@@ -28,7 +28,13 @@ In this repository, you can access the Java classes that implement a simple data
 
 ![My Image](images/sc2.png)
 
-More details have been gathered in 
+More details have been gathered in project report .
+
+Contributing
+We welcome contributions from anyone who is interested in improving the CodeKalak Team Airplane Ticket Shop. If you would like to contribute, please fork the repository and submit a pull request with your changes.
+
+
+
 Enjoy it! :)
 
 
